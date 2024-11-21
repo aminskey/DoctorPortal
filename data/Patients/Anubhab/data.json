@@ -5,9 +5,9 @@
     "age": 18,
     "cpr": "090406-XXXX",
     "background": {
-      "observations" : "Doesn't have headaches that often --nl No sign of Seizures --nl Memory Loss quite often --nl No vision changes --nl good speech --nl no nausea or vomiting",
+      "observations" : "Doesn't have headaches that often --nl No sign of Seizures --nl Healthy memory --nl No vision changes --nl good speech --nl no nausea or vomiting",
       "lifestyle": "no substance abuse, or smoking",
-      "medication": "vitamin-b"
+      "medication": "Vitamin D3"
     },
     "mri-scan": "MRI_of_Human_Brain.jpg",
     "profile-pic": "prof.png"

@@ -1,8 +1,7 @@
-import os
-
 import torch
 import pygame
 import json
+import cv2
 
 from pygame.locals import *
 from text import Text
@@ -17,7 +16,7 @@ docname = "Nik Alveis"
 name = "M e d   H U B"
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600), SCALED | FULLSCREEN)
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption(name.replace(' ',''))
 
 clock = pygame.time.Clock()
@@ -55,7 +54,12 @@ def showPatient(p):
     shade.set_alpha(120)
 
     s = screen.get_width() - shade.get_width()
+
+    img = cv2.imread(f"{p.wd}/{p.img}")
+    dst = cv2.copyMakeBorder(img, int(0.05*img.shape[0]), int(0.05*img.shape[0]), int(0.05*img.shape[1]),int(0.05*img.shape[1]), cv2.BORDER_CONSTANT, None, SHADOW2)
+
     profpic = SimpleImage(f"{p.wd}/{p.img}", (s-50, s - 50))
+    profpic.image = pygame.transform.scale(pygame.image.frombuffer(dst.tobytes(), dst.shape[1::-1], "BGR"), (s-50, s - 50))
     profpic.rect.topleft = (25, 25)
     allSprites.add(profpic)
 
@@ -203,62 +207,6 @@ def mainMenu():
 
         pygame.display.update()
         clock.tick(30)
-
-def selectImage(wd="data"):
-    print("Select Image")
-    print(os.getcwd())
-
-    l = []
-
-    cursor = Text(">", smallFont, (0, 255, 0))
-    index = 0
-
-    mountPoint = (cursor.image.get_width() + 10, 30)
-
-    k = 0
-    m = filterFiles(listdir(wd))
-    for i in m:
-        if isfile(f"{wd}/{i}"):
-            files.append(i)
-            tmp = Text(f"{i}", smallFont, (0, 255, 0))
-            if k == 0:
-                tmp.rect.topleft = mountPoint
-            else:
-                tmp.rect.topleft = l[k-1].rect.bottomleft
-            l.append(tmp)
-            k += 1
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_DOWN:
-                    index += 1 if index < len(l) - 1 else 0
-                    break
-                if event.key == K_UP:
-                    index -= 1 if index > 0 else 0
-                    break
-                if event.key == K_RETURN:
-                    return "{}/{}".format(wd, l[index].msg)
-                if event.key == K_ESCAPE:
-                    pygame.quit()
-                    quit()
-
-        cursor.rect.midright = l[index].rect.midleft + pygame.math.Vector2(-5, 0)
-        cursor.blink()
-
-        screen.fill((0, 0, 0))
-        for tmp in l:
-            screen.blit(tmp.image, tmp.rect)
-        screen.blit(cursor.image, cursor.rect)
-
-
-        pygame.display.update()
-        clock.tick(30)
-
-
 def recognize(path):
     img = Image.open(path).convert("RGB")
     img_tensor = all_transforms(img).unsqueeze(0)
