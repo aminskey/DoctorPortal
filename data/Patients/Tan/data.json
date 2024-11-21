@@ -5,14 +5,7 @@
     "age": 20,
     "cpr": "130804-XXXX",
     "background": {
-      "medical-history" : [
-        "Diagnosed with aspergers, has skull fracture",
-        "No sign of Seizures",
-        "Memory Loss quite often",
-        "Vision change - Half blind",
-        "Good speech",
-        "no nausea or vomiting"
-      ],
+      "observations": "Diagnosed with aspergers, has skull fracture --nl No sign of Seizures --nl Memory Loss quite often --nl Vision change - Half blind --nl Good speech --nl no nausea or vomiting",
       "lifestyle": "Intake of vitamins and supplements, drinks alcohol.",
       "medication": "None"
     },

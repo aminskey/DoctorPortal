@@ -17,7 +17,7 @@ docname = "Nik Alveis"
 name = "M e d   H U B"
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600), SCALED | FULLSCREEN)
 pygame.display.set_caption(name.replace(' ',''))
 
 clock = pygame.time.Clock()
@@ -37,6 +37,8 @@ patientsList = []
 
 BLACK = (0, 0, 0)
 BG = (125, 125, 125)
+SHADOW = (95, 95, 95)
+SHADOW2 = (65, 65, 65)
 WHITE = (200, 200, 200)
 
 with open("./data/stats.csv", "r") as f:
@@ -57,7 +59,7 @@ def showPatient(p):
     profpic.rect.topleft = (25, 25)
     allSprites.add(profpic)
 
-    pname = Text(p.name, fnt2, (200, 200, 200), shadow=BLACK)
+    pname = Text(p.name, fnt2, (200, 200, 200), shadow=SHADOW)
     pname.rect.midtop = profpic.rect.midbottom + pygame.math.Vector2(0, 5)
 
     cpr = Text(p.cpr, smallFont, (200, 200, 200))
@@ -70,14 +72,41 @@ def showPatient(p):
     age.rect.topleft = hgt.rect.bottomleft
     allSprites.add(pname, cpr, hgt, age)
 
-    h2 = Text("Background", subFont, WHITE, shadow=BLACK)
+    h2 = Text("Background", subFont, WHITE, shadow=SHADOW)
     h2.rect.midtop = (screen.get_width() - shade.get_width()//2, 5)
     allSprites.add(h2)
 
-    point = (s + 10, h2.rect.bottomleft[1] + 10)
-    print(p.bgInfo.items())
-    #for head in p.bgInfo.items():
 
+    point = pygame.math.Vector2(s + 10, h2.rect.bottomleft[1] + 10)
+    for head, data in p.bgInfo.items():
+        l = Text(head.strip('-').capitalize(), smallFont, WHITE, shadow=BLACK)
+        l.rect.topleft = point
+
+        point.x += l.rect.width + 10
+
+        textGrp.add(l)
+
+        x = data.split(' ')
+        for word in x:
+            tmp = Text(word, smallFont, WHITE)
+
+            if point.x + tmp.image.get_width() > screen.get_width() or word == '--nl':
+                point = pygame.math.Vector2(s+20, point[1] + tmp.image.get_height())
+
+            if word == '--nl':
+                continue
+
+            tmp.rect.topleft = point
+            point.x += tmp.rect.width + 10
+            textGrp.add(tmp)
+
+        point.x = s+10
+        point.y += l.rect.height*2
+
+    btn = Text("Diagnose MRI-SCAN", fnt2, WHITE, shadow=SHADOW, clickable=True)
+    btn.setClick(lambda: recognize(f"{p.wd}/{p.mri}"))
+    btn.rect.topleft = (s+10, point.y + 10)
+    textGrp.add(btn)
 
     retbtn = Text("Tilbage", subFont, (120, 120, 120), clickable=True)
     retbtn.rect.bottomright = screen.get_size() + pygame.math.Vector2(-10, -10)
@@ -113,11 +142,11 @@ def mainMenu():
 
     splash = Text(name, fnt, (115, 115, 115), screen.get_rect().center)
 
-    title = Text("Velkommen", fnt, WHITE, (screen.get_width() * 2//3, screen.get_height()//6), BLACK)
-    subtitle = Text("tilbage Dr. {}".format(docname), subFont, WHITE, shadow=BLACK)
-    t2 = Text("PATIENTER", subFont, WHITE, shadow=BLACK)
+    title = Text("Velkommen", fnt, WHITE, (screen.get_width() * 2//3, screen.get_height()//6), SHADOW2)
+    subtitle = Text("tilbage Dr. {}".format(docname), subFont, WHITE, shadow=SHADOW2)
+    t2 = Text("PATIENTER", subFont, WHITE, shadow=SHADOW)
 
-    logOff = Text("Log Af", subFont, (150, 150, 150), clickable=True)
+    logOff = Text("Log Off", subFont, (150, 150, 150), clickable=True)
     logOff.rect.bottomleft = screen.get_rect().bottomleft + pygame.math.Vector2(15, -15)
 
     t2.rect.midtop = (screen.get_width()//6, 5)
@@ -280,6 +309,3 @@ def filterFiles(l: list, wd="./data"):
 
 if __name__ == "__main__":
     mainMenu()
-
-    #while True:
-    #    recognize(selectImage("data"))

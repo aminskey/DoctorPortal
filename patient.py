@@ -9,4 +9,5 @@ class Patient:
         self.img = dict["profile-pic"]
 
         self.wd = ""
+        self.mri = dict["mri-scan"]
 
