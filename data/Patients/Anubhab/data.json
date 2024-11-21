@@ -1,0 +1,22 @@
+{
+  "patient-data": {
+    "name": "Anubhab Singh Karki",
+    "height": 173,
+    "age": 18,
+    "cpr": "090406-XXXX",
+    "background": {
+      "medical-history" : [
+        "Doesn't have headaches that often",
+        "No sign of Seizures",
+        "Memory Loss quite often",
+        "No vision changes",
+        "good speech",
+        "no nausea or vomiting"
+      ],
+      "lifestyle": "no substance abuse, or smoking",
+      "medication": "vitamin-b"
+    },
+    "mri-scan": "MRI_of_Human_Brain.jpg",
+    "profile-pic": "prof.png"
+  }
+}
