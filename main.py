@@ -11,6 +11,7 @@ from os import listdir
 from os.path import isfile, isdir
 from patient import Patient
 from simpleImage import SimpleImage
+from dateutil.relativedelta import relativedelta
 
 docname = "Nik Alveis"
 name = "M e d   H U B"
@@ -66,11 +67,11 @@ def showPatient(p):
     pname = Text(p.name, fnt2, (200, 200, 200), shadow=SHADOW)
     pname.rect.midtop = profpic.rect.midbottom + pygame.math.Vector2(0, 5)
 
-    cpr = Text(p.cpr, smallFont, (200, 200, 200))
-    cpr.rect.midtop = pname.rect.midbottom
+    cpr = Text("CPR: {}".format(p.cpr), smallFont, (200, 200, 200))
+    cpr.rect.topleft = pname.rect.bottomleft
 
     hgt = Text("Height: {}cm".format(p.height), smallFont, WHITE)
-    age = Text("Age: {}yrs".format(p.age), smallFont, WHITE)
+    age = Text(f"Age: {p.age.years}yrs {p.age.months}mts", smallFont, WHITE)
 
     hgt.rect.topleft = cpr.rect.bottomleft + pygame.math.Vector2(0, 5)
     age.rect.topleft = hgt.rect.bottomleft
@@ -81,14 +82,14 @@ def showPatient(p):
     allSprites.add(h2)
 
 
-    point = pygame.math.Vector2(s + 10, h2.rect.bottomleft[1] + 10)
+    point = pygame.math.Vector2(s + 10, h2.rect.bottomleft[1])
     for head, data in p.bgInfo.items():
-        l = Text(head.strip('-').capitalize(), smallFont, WHITE, shadow=BLACK)
+        l = Text("{}:".format(head.strip('-').capitalize()), smallFont, WHITE, shadow=BLACK)
         l.rect.topleft = point
-
-        point.x += l.rect.width + 10
-
         textGrp.add(l)
+
+        point.x = s+20
+        point.y += l.rect.height + 5
 
         x = data.split(' ')
         for word in x:
@@ -105,14 +106,29 @@ def showPatient(p):
             textGrp.add(tmp)
 
         point.x = s+10
-        point.y += l.rect.height*2
+        point.y += l.rect.height+10
 
-    btn = Text("Diagnose MRI-SCAN", fnt2, WHITE, shadow=SHADOW, clickable=True)
-    btn.setClick(lambda: recognize(f"{p.wd}/{p.mri}"))
-    btn.rect.topleft = (s+10, point.y + 10)
-    textGrp.add(btn)
+    mri = SimpleImage(f"{p.wd}/{p.mri}", (175, 175))
+    btn = Text("Press to Diagnose MRI-SCAN", fnt2, SHADOW, clickable=True, shadow=SHADOW2)
+    point = (s+10, point.y - 5)
+    if not p.diag:
+        btn.rect.topleft = point
+        mri.rect.topleft = btn.rect.bottomleft
 
-    retbtn = Text("Tilbage", subFont, (120, 120, 120), clickable=True)
+        textGrp.add(btn)
+        allSprites.add(mri)
+    else:
+        lb1 = Text("Diagnosed MRI-Scan", fnt2, WHITE, shadow=BLACK)
+        lb2 = Text("Diagnose:", fnt2, WHITE, shadow=SHADOW)
+        dinfo = Text(p.dict["diagnose"], fnt2, WHITE)
+
+        lb1.rect.topleft = point
+        mri.rect.topleft = lb1.rect.bottomleft
+        lb2.rect.topleft = mri.rect.topright + pygame.math.Vector2(5, 0)
+        dinfo.rect.topleft = lb2.rect.bottomleft
+        allSprites.add(mri, lb1, lb2, dinfo)
+
+    retbtn = Text("Return", subFont, (120, 120, 120), clickable=True)
     retbtn.rect.bottomright = screen.get_size() + pygame.math.Vector2(-10, -10)
     textGrp.add(retbtn)
 
@@ -123,6 +139,12 @@ def showPatient(p):
                 exit()
 
         if retbtn.clicked:
+            return
+        if btn.clicked:
+            recognize(f"{p.wd}/{p.mri}", p)
+            p.diag = True
+            p.dict["isdiagnosed"] = True
+            showPatient(p)
             return
 
         textGrp.update()
@@ -135,6 +157,37 @@ def showPatient(p):
         pygame.display.update()
         clock.tick(30)
 
+def startScreen():
+    textGrp = pygame.sprite.Group()
+
+    title = Text(name, fnt, WHITE, (screen.get_width()//2, screen.get_height()//3), shadow=SHADOW)
+    logo = SimpleImage("assets/logo-mini.png", (50, 50))
+    sub = Text("Staying Connected.", subFont, (90, 90, 90))
+
+    login = Text("Login", subFont, (110, 110, 110), (screen.get_width()//2, screen.get_height() * 2//3), clickable=True)
+    login.setClick(mainMenu)
+
+    sub.rect.midtop = title.rect.midbottom
+    logo.rect.midright = sub.rect.midleft + pygame.math.Vector2(-10, 0)
+
+    textGrp.add(title, login, logo, sub)
+
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        textGrp.update()
+
+        screen.fill(BG)
+        textGrp.draw(screen)
+
+        pygame.display.update()
+        clock.tick(30)
+
+
 def mainMenu():
     l = listdir("./data/Patients")
     textGrp = pygame.sprite.Group()
@@ -146,9 +199,9 @@ def mainMenu():
 
     splash = Text(name, fnt, (115, 115, 115), screen.get_rect().center)
 
-    title = Text("Velkommen", fnt, WHITE, (screen.get_width() * 2//3, screen.get_height()//6), SHADOW2)
-    subtitle = Text("tilbage Dr. {}".format(docname), subFont, WHITE, shadow=SHADOW2)
-    t2 = Text("PATIENTER", subFont, WHITE, shadow=SHADOW)
+    title = Text("Welcome", fnt, WHITE, (screen.get_width() * 2//3, screen.get_height()//6), SHADOW2)
+    subtitle = Text("Back Dr. {}".format(docname), subFont, WHITE, shadow=SHADOW2)
+    t2 = Text("Patients", subFont, WHITE, shadow=SHADOW)
 
     logOff = Text("Log Off", subFont, (150, 150, 150), clickable=True)
     logOff.rect.bottomleft = screen.get_rect().bottomleft + pygame.math.Vector2(15, -15)
@@ -193,10 +246,8 @@ def mainMenu():
             if pygame.mouse.get_pressed()[0] and btn.rect.collidepoint(pygame.mouse.get_pos()):
                 i = pList.index(btn)
                 showPatient(patientsList[i])
-
         if logOff.clicked:
-            pygame.quit()
-            exit()
+            return
 
         textGrp.update()
 
@@ -207,7 +258,7 @@ def mainMenu():
 
         pygame.display.update()
         clock.tick(30)
-def recognize(path):
+def recognize(path, p):
     img = Image.open(path).convert("RGB")
     img_tensor = all_transforms(img).unsqueeze(0)
     img_tensor = img_tensor.to(dev)
@@ -229,20 +280,27 @@ def recognize(path):
     label2 = Text("{}% ACCURACY".format(int((correct/total)*100)), subFont, (0, 0, 255))
     label2.rect.midbottom = label.rect.midtop
 
+    retBtn = Text("Return", subFont, SHADOW, clickable=True)
+    retBtn.rect.bottomright = screen.get_rect().bottomright + pygame.math.Vector2(-5, -5)
+
     while True:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_RETURN:
-                    return
+            if event.type == pygame.KEYDOWN or retBtn.clicked:
+                p.diag = True
+                p.dict["diagnose"] = label.msg
+                return
+
+        retBtn.update()
 
         screen.fill((0, 0, 0))
         screen.blit(img2, rct)
         screen.blit(label.image, label.rect)
         screen.blit(label2.image, label2.rect)
+        screen.blit(retBtn.image, retBtn.rect)
 
         pygame.display.update()
         clock.tick(30)
@@ -256,4 +314,4 @@ def filterFiles(l: list, wd="./data"):
     return m
 
 if __name__ == "__main__":
-    mainMenu()
+    startScreen()

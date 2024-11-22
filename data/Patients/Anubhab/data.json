@@ -2,7 +2,7 @@
   "patient-data": {
     "name": "Anubhab Singh Karki",
     "height": 173,
-    "age": 18,
+    "post2000": true,
     "cpr": "090406-XXXX",
     "background": {
       "observations" : "Doesn't have headaches that often --nl No sign of Seizures --nl Healthy memory --nl No vision changes --nl good speech --nl no nausea or vomiting",
@@ -10,6 +10,8 @@
       "medication": "Vitamin D3"
     },
     "mri-scan": "MRI_of_Human_Brain.jpg",
-    "profile-pic": "prof.png"
+    "isdiagnosed": true,
+    "profile-pic": "prof.png",
+    "diagnose": "No Tumor"
   }
 }

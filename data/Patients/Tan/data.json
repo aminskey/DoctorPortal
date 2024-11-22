@@ -3,13 +3,16 @@
     "name": "Tan Viet Nguyen",
     "height": 182,
     "age": 20,
+    "post2000": true,
     "cpr": "130804-XXXX",
     "background": {
       "observations": "Diagnosed with Asperger's, has skull fracture --nl No sign of Seizures --nl Memory Loss quite often --nl Vision change - Half blind --nl Good speech --nl no nausea or vomiting",
       "lifestyle": "Intake of vitamins and supplements, drinks alcohol.",
       "medication": "None"
     },
+    "isdiagnosed": false,
     "mri-scan": "tan_brain_mri.jpeg",
-    "profile-pic": "prof.jpg"
+    "profile-pic": "prof.jpg",
+    "diagnose": null
   }
 }

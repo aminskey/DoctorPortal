@@ -1,0 +1,17 @@
+{
+  "patient-data": {
+    "name": "Max Almgren Storm",
+    "height": 190,
+    "post2000": true,
+    "cpr": "021206-XXXX",
+    "background": {
+      "observations" : "Has headaches daily --nl No sign of Seizures --nl Bad Memory --nl No vision changes --nl good speech --nl no nausea or vomiting",
+      "lifestyle": "Does condition training. drinks alcohol quite often",
+      "medication": "Supplements - Vitamins etc."
+    },
+    "mri-scan": "brain_mri.png",
+    "isdiagnosed": false,
+    "profile-pic": "max-pic.jpg",
+    "diagnose": null
+  }
+}

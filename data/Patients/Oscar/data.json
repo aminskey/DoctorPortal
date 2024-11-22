@@ -1,0 +1,17 @@
+{
+  "patient-data": {
+    "name": "Oscar Fritz Raft",
+    "height": 179,
+    "post2000": true,
+    "cpr": "221005-XXXX",
+    "background": {
+      "observations" : "Doesn't have headaches that often --nl No sign of Seizures --nl Healthy memory --nl No vision changes --nl good speech --nl no nausea or vomiting",
+      "lifestyle": "Trains often, no substance abuse or alcohol intake",
+      "medication": "Supplements - Vitamins etc."
+    },
+    "mri-scan": "oscar-mri.jpg",
+    "isdiagnosed": false,
+    "profile-pic": "prof.png",
+    "diagnose": null
+  }
+}
