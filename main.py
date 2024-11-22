@@ -162,15 +162,18 @@ def startScreen():
 
     title = Text(name, fnt, WHITE, (screen.get_width()//2, screen.get_height()//3), shadow=SHADOW)
     logo = SimpleImage("assets/logo-mini.png", (50, 50))
-    sub = Text("Staying Connected.", subFont, (90, 90, 90))
+    sub = Text("Staying Connected.", subFont, (100, 100, 100))
 
-    login = Text("Login", subFont, (110, 110, 110), (screen.get_width()//2, screen.get_height() * 2//3), clickable=True)
+    login = Text("Login", subFont, (105, 105, 105), (screen.get_width()//2, screen.get_height() * 2//3), clickable=True)
     login.setClick(mainMenu)
+
+    splash = Text("(c) Intersoft solutions", smallFont, (110, 110, 110))
+    splash.rect.bottomright = screen.get_rect().bottomright
 
     sub.rect.midtop = title.rect.midbottom
     logo.rect.midright = sub.rect.midleft + pygame.math.Vector2(-10, 0)
 
-    textGrp.add(title, login, logo, sub)
+    textGrp.add(title, login, logo, sub, splash)
 
 
     while True:
