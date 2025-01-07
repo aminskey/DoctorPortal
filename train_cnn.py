@@ -4,7 +4,7 @@ import torch.nn as nn
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 from torch.optim import SGD
-from pyimagesearch.lenet import CNN, all_transforms
+from lenet import CNN, all_transforms
 
 
 batch_size = 64

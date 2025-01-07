@@ -3,18 +3,17 @@ import pygame
 import json
 import cv2
 
-from pygame.locals import *
 from text import Text
 from PIL import Image
-from pyimagesearch.lenet import CNN, all_transforms, class_dict
+from lenet import CNN, all_transforms, class_dict
 from os import listdir
 from os.path import isfile, isdir
 from patient import Patient
 from simpleImage import SimpleImage
-from dateutil.relativedelta import relativedelta
 
-docname = "Nik Alveis"
+docname = "Nick Larsen"
 name = "M e d   H U B"
+companyName = "(c) NeuroSoft Solutions"
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
@@ -167,7 +166,7 @@ def startScreen():
     login = Text("Login", subFont, (105, 105, 105), (screen.get_width()//2, screen.get_height() * 2//3), clickable=True)
     login.setClick(mainMenu)
 
-    splash = Text("(c) Intersoft solutions", smallFont, (110, 110, 110))
+    splash = Text(companyName, smallFont, (110, 110, 110))
     splash.rect.bottomright = screen.get_rect().bottomright
 
     sub.rect.midtop = title.rect.midbottom
