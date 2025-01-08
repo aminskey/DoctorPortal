@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       train_cnn.py
+"""
+
 import torch
 import torch.nn as nn
 

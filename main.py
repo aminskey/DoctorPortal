@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       main.py
+"""
+print("Importing libraries .....")
 import torch
 import pygame
 import json
@@ -13,7 +19,7 @@ from simpleImage import SimpleImage
 
 docname = "Nick Larsen"
 name = "M e d   H U B"
-companyName = "(c) NeuroSoft Solutions"
+companyName = "(c) Neurosoft Solutions"
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
@@ -21,10 +27,12 @@ pygame.display.set_caption(name.replace(' ',''))
 
 clock = pygame.time.Clock()
 
+print("Libraries imported\nImporting model.....")
 dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = CNN(4)
 model.load_state_dict(torch.load("output/cnn_model_stdict.pth", weights_only=True, map_location=dev))
 model = model.to(dev)
+print("Model imported")
 
 fnt = pygame.font.Font("assets/Flexi_IBM_VGA_True.ttf", 100)
 smallFont = pygame.font.Font("assets/Flexi_IBM_VGA_True.ttf", 25)
@@ -110,7 +118,7 @@ def showPatient(p):
     mri = SimpleImage(f"{p.wd}/{p.mri}", (175, 175))
     btn = Text("Press to Diagnose MRI-SCAN", fnt2, SHADOW, clickable=True, shadow=SHADOW2)
     point = (s+10, point.y - 5)
-    if not p.diag:
+    if not p.diag:  # Is the player diagnosed?
         btn.rect.topleft = point
         mri.rect.topleft = btn.rect.bottomleft
 
@@ -127,7 +135,7 @@ def showPatient(p):
         dinfo.rect.topleft = lb2.rect.bottomleft
         allSprites.add(mri, lb1, lb2, dinfo)
 
-    retbtn = Text("Return", subFont, (120, 120, 120), clickable=True)
+    retbtn = Text("Back", subFont, (120, 120, 120), clickable=True)
     retbtn.rect.bottomright = screen.get_size() + pygame.math.Vector2(-10, -10)
     textGrp.add(retbtn)
 
@@ -160,8 +168,7 @@ def startScreen():
     textGrp = pygame.sprite.Group()
 
     title = Text(name, fnt, WHITE, (screen.get_width()//2, screen.get_height()//3), shadow=SHADOW)
-    logo = SimpleImage("assets/logo-mini.png", (50, 50))
-    sub = Text("Staying Connected.", subFont, (100, 100, 100))
+    sub = Text("Staying Connected.", subFont, (150, 150, 150), shadow=(100, 100, 100))
 
     login = Text("Login", subFont, (105, 105, 105), (screen.get_width()//2, screen.get_height() * 2//3), clickable=True)
     login.setClick(mainMenu)
@@ -170,9 +177,8 @@ def startScreen():
     splash.rect.bottomright = screen.get_rect().bottomright
 
     sub.rect.midtop = title.rect.midbottom
-    logo.rect.midright = sub.rect.midleft + pygame.math.Vector2(-10, 0)
 
-    textGrp.add(title, login, logo, sub, splash)
+    textGrp.add(title, login, sub, splash)
 
 
     while True:
@@ -282,7 +288,7 @@ def recognize(path, p):
     label2 = Text("{}% ACCURACY".format(int((correct/total)*100)), subFont, (0, 0, 255))
     label2.rect.midbottom = label.rect.midtop
 
-    retBtn = Text("Return", subFont, SHADOW, clickable=True)
+    retBtn = Text("Back", subFont, SHADOW, clickable=True)
     retBtn.rect.bottomright = screen.get_rect().bottomright + pygame.math.Vector2(-5, -5)
 
     while True:

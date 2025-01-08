@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       text.py
+"""
+
 import pygame
 from pygame.locals import *
 

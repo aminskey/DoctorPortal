@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       patient.py
+"""
+
 import datetime
 from dateutil.relativedelta import relativedelta
 

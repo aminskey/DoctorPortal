@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       lenet.py
+"""
+
 import torch.nn as nn
 import torchvision.transforms as transforms
 

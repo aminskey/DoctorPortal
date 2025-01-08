@@ -1,3 +1,9 @@
+"""
+*   AUTHOR:     SYED M. AMIN
+*   PROJECT:    AI (ESCAPE ROOM AFLEVERING)
+*   FILE:       simpleImage.py
+"""
+
 import pygame
 
 class SimpleImage(pygame.sprite.Sprite):
